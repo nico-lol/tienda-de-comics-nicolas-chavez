@@ -9,7 +9,7 @@ class Editorial(models.Model):
 class Comic(models.Model):
     titulo = models.CharField(max_length=50)
     editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE)
-    portada = models.ImageField(upload_to='portadas/')
+    portada = models.ImageField(upload_to='portadas/', blank=True)
     numero_tomo = models.PositiveIntegerField()
     tapa_dura = models.BooleanField()
     stock = models.PositiveIntegerField()
