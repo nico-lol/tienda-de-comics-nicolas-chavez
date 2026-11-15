@@ -1,0 +1,94 @@
+:root {
+    --ink: #211b35;
+    --purple: #6c3fd1;
+    --purple-dark: #4d27a6;
+    --page: #f7f5fb;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--page);
+    color: var(--ink);
+}
+
+.store-header {
+    background: linear-gradient(130deg, #211b35, #4d27a6);
+    color: #fff;
+    padding: 3.5rem 0;
+    margin-bottom: 2.5rem;
+}
+
+.store-header h1 {
+    font-weight: 800;
+    letter-spacing: -0.04em;
+}
+
+.store-header p {
+    color: #e4dcf8;
+    margin-bottom: 0;
+}
+
+.comic-card {
+    border: 0;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 0.5rem 1.5rem rgba(33, 27, 53, 0.08);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.comic-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 2rem rgba(33, 27, 53, 0.15);
+}
+
+.comic-cover {
+    height: 280px;
+    padding: 0.75rem;
+    object-fit: contain;
+    background: #eeebf5;
+}
+
+.cover-placeholder {
+    height: 280px;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    background: #eeebf5;
+    color: #756d83;
+}
+
+.comic-card .card-body {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+}
+
+.comic-card .card-title {
+    font-weight: 700;
+}
+
+.comic-publisher {
+    color: #756d83;
+    font-size: 0.9rem;
+}
+
+.comic-price {
+    color: var(--purple-dark);
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.btn-reserve {
+    border: 0;
+    background: var(--purple);
+    font-weight: 700;
+}
+
+.btn-reserve:hover {
+    background: var(--purple-dark);
+}
+
+.store-footer {
+    background: var(--ink);
+    color: #e4dcf8;
+}

@@ -1,0 +1,77 @@
+{% load static humanize %}
+<!doctype html>
+<html lang="es-CL">
+    <head>
+        <title>Funcomics</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="{% static 'css/estilo.css' %}" />
+    </head>
+
+    <body>
+        <header class="store-header text-center">
+            <div class="container">
+                <h1 class="display-5 mb-2">Funcomics</h1>
+                <p>Reserva tus cómics favoritos</p>
+            </div>
+        </header>
+
+        <main class="container pb-5">
+            <div class="d-flex flex-wrap justify-content-between align-items-end mb-4">
+                <div>
+                    <p class="text-uppercase fw-bold small text-secondary mb-1">Catálogo</p>
+                    <h2 class="h3 mb-0">Cómics disponibles</h2>
+                </div>
+            </div>
+
+            {% if comics %}
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+                {% for comic in comics %}
+                <div class="col">
+                    <article class="card comic-card h-100">
+                        {% if comic.portada %}
+                        <img class="comic-cover card-img-top" src="{{ comic.portada.url }}" alt="Portada de {{ comic.titulo }}">
+                        {% else %}
+                        <div class="cover-placeholder">Portada no disponible</div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h3 class="card-title h5">{{ comic.titulo }}</h3>
+                            <p class="comic-publisher mb-2">{{ comic.editorial.nombre }}</p>
+                            <p class="comic-price mb-3">${{ comic.precio|intcomma }}</p>
+
+                            {% if comic.stock == 0 %}
+                                <a class="btn btn-danger w-100 mt-auto disabled" href="#" role="button" aria-disabled="true">AGOTADO</a>
+                            {% else %}
+                                <a class="btn btn-primary btn-reserve w-100 mt-auto" href="#" role="button">RESERVAR</a>
+                            {% endif %}
+                        </div>
+                    </article>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center bg-white rounded-4 shadow-sm p-5">
+                <h3 class="h5 fw-bold">Aún no hay cómics disponibles</h3>
+            </div>
+            {% endif %}
+        </main>
+        <footer class="store-footer text-center py-4">
+            <div class="container">
+                <p class="mb-0">Funcomics · Todos los derechos reservados</p>
+            </div>
+        </footer>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>
