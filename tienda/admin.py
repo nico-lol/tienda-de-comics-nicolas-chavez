@@ -9,7 +9,7 @@ class EditorialAdmin(admin.ModelAdmin):
 
 @admin.register(Comic)
 class ComicAdmin(admin.ModelAdmin):
-    list_display = ('titulo', 'portada_miniatura', 'editorial', 'numero_tomo', 'tapa_dura', 'stock', 'precio', 'disponible')
+    list_display = ('titulo', 'portada_miniatura', 'editorial', 'numero_tomo', 'tapa_dura', 'stock', 'precio_pesos', 'disponible')
     list_filter = ('editorial', 'tapa_dura', 'disponible')
     search_fields = ('titulo',)
     readonly_fields = ('portada_miniatura',)
@@ -20,7 +20,12 @@ class ComicAdmin(admin.ModelAdmin):
             return format_html('<img src="{}" style="max-height: 150px;" />', obj.portada.url)
         return "-"
 
+    @admin.display(description='Precio')
+    def precio_pesos(self, obj):
+        return f"${obj.precio:,}".replace(',', '.')
+
 @admin.register(Reserva)
 class ReservaAdmin(admin.ModelAdmin):
     list_display = ('comic', 'nombre_cliente', 'correo_cliente', 'rut_cliente', 'cantidad_ejemplares', 'fecha_y_hora_reserva', 'codigo_reserva')
-    search_fields = ('nombre_cliente', 'correo_cliente', 'rut_cliente', 'codigo_reserva')
+    search_fields = ('nombre_cliente', 'rut_cliente')
+    list_filter = ('comic',)
