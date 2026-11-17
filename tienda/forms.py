@@ -1,11 +1,21 @@
 from django import forms
+from django.core.validators import RegexValidator
 from tienda.models import Comic
 
 class FormReserva(forms.Form):
     id_comic = forms.CharField(widget=forms.HiddenInput())
     nombre = forms.CharField()
     correo = forms.EmailField()
-    rut = forms.CharField(max_length=9)
+    rut = forms.CharField(
+        min_length=8,
+        max_length=9,
+        validators=[
+            RegexValidator(
+                regex=r'^[0-9]+$',
+                message='El RUT debe contener solo números.',
+            )
+        ],
+    )
     cantidad_de_ejemplares = forms.IntegerField(min_value=1, max_value=3)
 
     id_comic.widget.attrs.update({'class': 'form-control'})

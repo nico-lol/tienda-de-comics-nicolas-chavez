@@ -9,10 +9,23 @@ def index(request):
     data = {'comics': comics}
     return render(request, 'index.html', data)
 
+def formatear_rut(rut):
+    rut_limpio = rut.replace('.', '').replace('-', '').strip().upper()
+    if len(rut_limpio) < 2 or not rut_limpio[:-1].isdigit():
+        return rut
+
+    cuerpo = f'{int(rut_limpio[:-1]):,}'.replace(',', '.')
+    return f'{cuerpo}-{rut_limpio[-1]}'
+
 def comprobante(request, id_reserva):
     reserva = Reserva.objects.select_related('comic').get(id=id_reserva)
     valor_total = reserva.comic.precio * reserva.cantidad_ejemplares
-    data = {'reserva': reserva, 'valor_total': valor_total}
+    rut_formateado = formatear_rut(reserva.rut_cliente)
+    data = {
+        'reserva': reserva,
+        'valor_total': valor_total,
+        'rut_formateado': rut_formateado,
+    }
     return render(request, 'comprobante.html', data)
 
 def generar_codigo_reserva():
