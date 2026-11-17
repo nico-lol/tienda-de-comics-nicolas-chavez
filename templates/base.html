@@ -1,0 +1,26 @@
+{% load static %}
+<!doctype html>
+<html lang="es-CL">
+    <head>
+        <title>{% block title %}Funcomics · Tienda de cómics{% endblock %}</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="{% static 'css/estilo.css' %}" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="site-header-inner">
+                <a class="site-brand" href="/">Funcomics</a>
+                <p>Reserva tus cómics favoritos</p>
+            </div>
+        </header>
+
+        <main class="site-main">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="site-footer">
+            <p>Funcomics · Todos los derechos reservados</p>
+        </footer>
+    </body>
+</html>
