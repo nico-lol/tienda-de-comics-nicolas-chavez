@@ -8,6 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index),
     path('reservar/<int:id_comic>/', views.reservar),
+    path('comprobante/<int:id_reserva>/', views.comprobante),
 ]
 
 if settings.DEBUG:

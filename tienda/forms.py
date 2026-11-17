@@ -5,8 +5,8 @@ class FormReserva(forms.Form):
     id_comic = forms.CharField(widget=forms.HiddenInput())
     nombre = forms.CharField()
     correo = forms.EmailField()
-    rut = forms.CharField()
-    cantidad_de_ejemplares = forms.IntegerField()
+    rut = forms.CharField(max_length=9)
+    cantidad_de_ejemplares = forms.IntegerField(min_value=1, max_value=3)
     codigo = forms.CharField()
 
     id_comic.widget.attrs.update({'class': 'form-control'})
