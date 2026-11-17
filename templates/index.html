@@ -49,7 +49,7 @@
                             {% if comic.stock == 0 %}
                                 <a class="btn btn-danger w-100 mt-auto disabled" href="#" role="button" aria-disabled="true">AGOTADO</a>
                             {% else %}
-                                <a class="btn btn-primary btn-reserve w-100 mt-auto" href="#" role="button">RESERVAR</a>
+                                <a class="btn btn-primary btn-reserve w-100 mt-auto" href="reservar/{{ comic.id }}" role="button">RESERVAR</a>
                             {% endif %}
                         </div>
                     </article>
