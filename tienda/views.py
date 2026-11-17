@@ -24,7 +24,11 @@ def index(request):
 
 def formatear_rut(rut):
     rut_limpio = rut.replace('.', '').replace('-', '').strip().upper()
-    if len(rut_limpio) < 2 or not rut_limpio[:-1].isdigit():
+    if (
+        len(rut_limpio) < 2
+        or not rut_limpio[:-1].isdigit()
+        or not (rut_limpio[-1].isdigit() or rut_limpio[-1] == 'K')
+    ):
         return rut
 
     cuerpo = f'{int(rut_limpio[:-1]):,}'.replace(',', '.')

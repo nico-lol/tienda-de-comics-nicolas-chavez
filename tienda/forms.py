@@ -11,8 +11,8 @@ class FormReserva(forms.Form):
         max_length=9,
         validators=[
             RegexValidator(
-                regex=r'^[0-9]+$',
-                message='El RUT debe contener solo números.',
+                regex=r'^[0-9]+[Kk]?$',
+                message='El RUT debe contener números y puede terminar con la letra K.',
             )
         ],
     )
