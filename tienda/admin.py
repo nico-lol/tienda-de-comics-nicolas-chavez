@@ -14,6 +14,10 @@ class ComicAdmin(admin.ModelAdmin):
     search_fields = ('titulo',)
     readonly_fields = ('portada_miniatura',)
 
+    def save_model(self, request, obj, form, change):
+        obj.disponible = obj.stock > 0
+        super().save_model(request, obj, form, change)
+
     @admin.display(description='Portada')
     def portada_miniatura(self, obj):
         if obj.portada:

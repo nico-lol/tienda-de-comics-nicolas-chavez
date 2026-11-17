@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from tienda.models import Comic, Editorial, Reserva
 from tienda.forms import FormReserva
 import datetime
@@ -35,31 +35,41 @@ def generar_codigo_reserva():
             return codigo
 
 def reservar(request, id_comic):
+    comic = get_object_or_404(
+        Comic,
+        id=id_comic,
+        disponible=True,
+        stock__gt=0,
+    )
     form = FormReserva()
     form.fields['id_comic'].initial = id_comic
 
     if request.method == 'POST':
         form = FormReserva(request.POST)
         if form.is_valid():
-            comic = Comic.objects.get(id = id_comic)
             cantidad_ejemplares = form.cleaned_data['cantidad_de_ejemplares']
-            comic.stock -= cantidad_ejemplares
-            comic.save()
+            if cantidad_ejemplares > comic.stock:
+                form.add_error(
+                    'cantidad_de_ejemplares',
+                    f'Solo hay {comic.stock} en el stock.',
+                )
+            else:
+                comic.stock -= cantidad_ejemplares
+                comic.save()
 
-            reserva = Reserva()
-            reserva.comic = comic
-            reserva.nombre_cliente = form.cleaned_data['nombre']
-            reserva.correo_cliente = form.cleaned_data['correo']
-            reserva.rut_cliente = form.cleaned_data['rut']
-            reserva.cantidad_ejemplares = cantidad_ejemplares
-            reserva.fecha_y_hora_reserva = datetime.datetime.now()
-            reserva.codigo_reserva = generar_codigo_reserva()
-            reserva.save()
+                reserva = Reserva()
+                reserva.comic = comic
+                reserva.nombre_cliente = form.cleaned_data['nombre']
+                reserva.correo_cliente = form.cleaned_data['correo']
+                reserva.rut_cliente = form.cleaned_data['rut']
+                reserva.cantidad_ejemplares = cantidad_ejemplares
+                reserva.fecha_y_hora_reserva = datetime.datetime.now()
+                reserva.codigo_reserva = generar_codigo_reserva()
+                reserva.save()
 
-            return redirect('/comprobante/' + str(reserva.id))
+                return redirect('/comprobante/' + str(reserva.id))
 
 
 
-    comic = Comic.objects.get(id=id_comic)
     data = {'form': form, 'comic': comic}
     return render(request, 'reservar.html', data)
