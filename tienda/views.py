@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from tienda.models import Comic, Editorial, Reserva
 from tienda.forms import FormReserva
 import datetime
+import secrets
 
 def index(request):
     comics = Comic.objects.all()
@@ -13,6 +14,12 @@ def comprobante(request, id_reserva):
     valor_total = reserva.comic.precio * reserva.cantidad_ejemplares
     data = {'reserva': reserva, 'valor_total': valor_total}
     return render(request, 'comprobante.html', data)
+
+def generar_codigo_reserva():
+    while True:
+        codigo = secrets.token_hex(5).upper()
+        if not Reserva.objects.filter(codigo_reserva=codigo).exists():
+            return codigo
 
 def reservar(request, id_comic):
     form = FormReserva()
@@ -33,7 +40,7 @@ def reservar(request, id_comic):
             reserva.rut_cliente = form.cleaned_data['rut']
             reserva.cantidad_ejemplares = cantidad_ejemplares
             reserva.fecha_y_hora_reserva = datetime.datetime.now()
-            reserva.codigo_reserva = form.cleaned_data['codigo']
+            reserva.codigo_reserva = generar_codigo_reserva()
             reserva.save()
 
             return redirect('/comprobante/' + str(reserva.id))
