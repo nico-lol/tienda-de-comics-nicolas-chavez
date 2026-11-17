@@ -5,8 +5,21 @@ import datetime
 import secrets
 
 def index(request):
-    comics = Comic.objects.all()
-    data = {'comics': comics}
+    search_query = request.GET.get('q', '').strip()
+    selected_editorial = request.GET.get('editorial', '')
+    comics = Comic.objects.select_related('editorial').all()
+
+    if search_query:
+        comics = comics.filter(titulo__icontains=search_query)
+    if selected_editorial:
+        comics = comics.filter(editorial__nombre=selected_editorial)
+
+    data = {
+        'comics': comics,
+        'editorials': Editorial.objects.order_by('nombre'),
+        'search_query': search_query,
+        'selected_editorial': selected_editorial,
+    }
     return render(request, 'index.html', data)
 
 def formatear_rut(rut):

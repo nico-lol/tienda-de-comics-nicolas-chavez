@@ -10,6 +10,34 @@
             <h1>Cómics disponibles</h1>
         </header>
 
+        <form class="catalog-filters" method="get">
+            <label class="catalog-filter-field" for="comic-search">
+                Buscar por título
+                <input
+                    id="comic-search"
+                    type="search"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="Ej. Spider-Man"
+                >
+            </label>
+            <label class="catalog-filter-field" for="editorial-filter">
+                Editorial
+                <select id="editorial-filter" name="editorial">
+                    <option value="">Todas las editoriales</option>
+                    {% for editorial in editorials %}
+                        <option value="{{ editorial.nombre }}" {% if editorial.nombre == selected_editorial %}selected{% endif %}>{{ editorial.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <div class="catalog-filter-actions">
+                <button class="button button-primary" type="submit">Buscar</button>
+                {% if search_query or selected_editorial %}
+                    <a class="button button-secondary" href="/">Limpiar</a>
+                {% endif %}
+            </div>
+        </form>
+
         {% if comics %}
             <div class="comic-grid">
                 {% for comic in comics %}
@@ -35,7 +63,12 @@
             </div>
         {% else %}
             <div class="empty-state">
-                <h2>Aún no hay cómics disponibles</h2>
+                {% if search_query or selected_editorial %}
+                    <h2>No se encontraron cómics</h2>
+                    <p>Prueba con otro título o editorial.</p>
+                {% else %}
+                    <h2>Aún no hay cómics disponibles</h2>
+                {% endif %}
             </div>
         {% endif %}
     </section>
