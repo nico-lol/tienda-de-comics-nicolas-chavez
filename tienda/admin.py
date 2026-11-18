@@ -9,7 +9,7 @@ class EditorialAdmin(admin.ModelAdmin):
 
 @admin.register(Comic)
 class ComicAdmin(admin.ModelAdmin):
-    list_display = ('titulo', 'portada_miniatura', 'editorial', 'numero_tomo', 'tapa_dura', 'stock', 'precio_pesos', 'disponible')
+    list_display = ('titulo', 'portada_miniatura', 'portada_alternativa_miniatura', 'editorial', 'numero_tomo', 'tapa_dura', 'stock', 'precio_pesos', 'disponible')
     list_filter = ('editorial', 'tapa_dura', 'disponible')
     search_fields = ('titulo',)
     readonly_fields = ('portada_miniatura',)
@@ -23,6 +23,11 @@ class ComicAdmin(admin.ModelAdmin):
         if obj.portada:
             return format_html('<img src="{}" style="max-height: 150px;" />', obj.portada.url)
         return "-"
+
+    @admin.display(description='Portada alternativa')
+    def portada_alternativa_miniatura(self, obj):
+        if obj.portada_alternativa:
+            return format_html('<img src="{}" style="max-height: 150px;" />', obj.portada_alternativa.url)
 
     @admin.display(description='Precio')
     def precio_pesos(self, obj):

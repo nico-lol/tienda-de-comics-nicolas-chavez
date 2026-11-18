@@ -14,6 +14,11 @@
                         {% else %}
                             <div class="cover-placeholder">Portada no disponible</div>
                         {% endif %}
+                        {% if comic.portada_alternativa %}
+                            <img class="comic-cover" src="{{ comic.portada_alternativa.url }}" alt="Portada alternativa de {{ comic.titulo }}">
+                        {% else %}
+                            <div class="cover-placeholder">Portada no disponible</div>
+                        {% endif %}
                     </div>
                     <div class="comic-details">
                         <h1 id="comic-title">{{ comic.titulo }}</h1>
